@@ -1,8 +1,7 @@
 body, #root {
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100% !important;
-  max-width: 100% !important;
+  margin: 0;
+  padding: 0;
+  width: 100%;
   background-color: #212121 !important;
 }
 
@@ -33,7 +32,7 @@ body, #root {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('./assets/images/header.jpg'); /* Replace with your image URL */
+  background-image: url('./assets/images/header.jpg');
   background-size: cover;
   background-position: center;
 }
