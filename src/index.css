@@ -3,6 +3,7 @@ body, #root {
   padding: 0 !important;
   width: 100% !important;
   max-width: 100% !important;
+  background-color: #212121 !important;
 }
 
 .hero-section {
