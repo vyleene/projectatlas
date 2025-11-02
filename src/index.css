@@ -13,7 +13,8 @@ body, #root {
   align-items: center;
   justify-content: center;
   color: white;
-  text-align: center;
+  text-align: center; 
+  overflow: hidden;
 }
 
 .hero-overlay {
@@ -35,9 +36,55 @@ body, #root {
   background-image: url('./assets/images/header.jpg');
   background-size: cover;
   background-position: center;
+  z-index: 0;
 }
 
 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
+}
+
+.globe-wrapper {
+  width: 320px;
+  height: 320px;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.globe-wrapper canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (max-width: 992px) {
+  .globe-wrapper {
+    width: 260px;
+    height: 260px;
+  }
+}
+
+.quote-section {
+	background: linear-gradient(90deg, #061f4a 0%, #323a45 52%, #494440 100%) !important;
+}
+
+.about-section {
+  padding: 2rem;
+  background-image: url('./assets/images/header5.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.about-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
 }
