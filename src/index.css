@@ -87,4 +87,10 @@ body, #root {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.4);
   pointer-events: none;
+  z-index: 1;
+}
+
+.about-section .container {
+  position: relative;
+  z-index: 2;
 }
