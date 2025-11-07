@@ -78,7 +78,16 @@ body, #root {
   position: relative;
 }
 
-.about-section::before {
+.panel-showcase-section {
+  height: 625px !important;
+  padding: 2rem;
+  background-image: url('./assets/images/header6.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.about-section::before, .panel-showcase-section::before {
   content: '';
   position: absolute;
   top: 0;
