@@ -3,6 +3,7 @@ import Header from './components/Header'
 import Navigation from './components/Navigation'
 import Quote from './components/Quote'
 import About from './components/About'
+import Features from './components/Features'
 
 const App: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ const App: React.FC = () => {
       <Header/>
       <Quote/>
       <About/>
+      <Features/>
     </>
   )
 }

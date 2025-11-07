@@ -94,3 +94,9 @@ body, #root {
   position: relative;
   z-index: 2;
 }
+
+.icon-square {
+  width: 3rem;
+  height: 3rem;
+  border-radius: .75rem;
+}
