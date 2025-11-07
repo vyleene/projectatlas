@@ -60,17 +60,17 @@ const About: React.FC = () => {
                 </Row>
                 <Row>
                     <Col lg="8" md="12" className="mb-4 d-flex align-items-stretch">
-                        <Card bg="dark" text="white" className="w-100">
-                        <Card.Body className="d-flex flex-column">
-                            <Card.Title as="h3">About Project Atlas</Card.Title>
-                            <Card.Text>
-                                Project Atlas, developed by Team Kuantica, is an earthquake-monitoring application designed to improve earthquake response and awareness using an interactive heatmap. It aims to empower citizens and local government officials by providing real-time earthquake information and safety resources. The target audience includes every citizen and government first-responder at the barangay and city levels.
-                            </Card.Text>
-                            <Card.Text>
-                                Our goal is to improve earthquake response and situational awareness through crowdsourced shaking reports and dynamic heatmap visualizations.
-                            </Card.Text>
-                            <Button variant="primary" className="mt-auto align-self-start">Explore the Heatmap</Button>
-                        </Card.Body>
+                        <Card text="white" className="w-100">
+                            <Card.Body className="d-flex flex-column">
+                                <Card.Title as="h3">About Project Atlas</Card.Title>
+                                <Card.Text>
+                                    Project Atlas, developed by Team Kuantica, is an earthquake-monitoring application designed to improve earthquake response and awareness using an interactive heatmap. It aims to empower citizens and local government officials by providing real-time earthquake information and safety resources. The target audience includes every citizen and government first-responder at the barangay and city levels.
+                                </Card.Text>
+                                <Card.Text>
+                                    Our goal is to improve earthquake response and situational awareness through crowdsourced shaking reports and dynamic heatmap visualizations.
+                                </Card.Text>
+                                <Button variant="primary" className="mt-auto align-self-start">Explore the Heatmap</Button>
+                            </Card.Body>
                         </Card>
                     </Col>
                     <Col lg="4" md="12" className="mb-4 d-flex justify-content-center align-items-stretch">

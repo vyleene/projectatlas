@@ -21,7 +21,8 @@ const Navigation: React.FC = () => {
             className="shadow-sm"
             style={{
                 backgroundColor: isScrolled ? 'rgba(33, 33, 33, 0.7)' : 'rgba(255, 255, 255, 0)',
-                transition: 'background-color 0.3s ease-in-out'
+                transition: 'background-color 0.3s ease-in-out',
+                backdropFilter: 'blur(10px)'
             }}
         >
             <Container className="px-5">
