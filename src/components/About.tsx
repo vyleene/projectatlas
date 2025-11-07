@@ -13,7 +13,10 @@ const About: React.FC = () => {
 
     useEffect(() => {
         if (globeEl.current) {
-            globeEl.current.controls().enabled = false;
+            globeEl.current.controls().enabled = true;
+            globeEl.current.controls().enableZoom = false;
+            globeEl.current.controls().enablePan = false;
+            globeEl.current.controls().enableRotate = false;
             globeEl.current.controls().autoRotate = true;
             globeEl.current.controls().autoRotateSpeed = 0.9;
             globeEl.current.pointOfView({ altitude: 2.5 });
@@ -88,7 +91,7 @@ const About: React.FC = () => {
                         </div>
                     </Col>
                 </Row>
-      </Container>
+            </Container>
         </section>
     )
 }
