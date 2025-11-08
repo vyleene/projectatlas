@@ -1,23 +1,20 @@
 import React from 'react'
-import Header from './components/Header'
-import Navigation from './components/Navigation'
-import Quote from './components/Quote'
-import About from './components/About'
-import Features from './components/Features'
-import Footer from './components/Footer'
-import PanelShowcase from './components/PanelShowcase'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Home from './sites/Home'
+import Login from './sites/Login'
+import Register from './sites/Register'
+import Dashboard from './sites/Dashboard'
 
 const App: React.FC = () => {
   return (
-    <>
-      <Navigation/>
-      <Header/>
-      <Quote/>
-      <About/>
-      <Features/>
-      <PanelShowcase/>
-      <Footer/>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard/*" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

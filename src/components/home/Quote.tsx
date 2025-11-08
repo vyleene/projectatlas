@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import logo from "../assets/images/alabid.png";
+import logo from "../../assets/images/alabid.png";
 
 const Quote: React.FC = () => {
     return (

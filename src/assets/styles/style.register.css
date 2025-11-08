@@ -1,0 +1,37 @@
+.mapContainer {
+    height: 400px;
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer !important;
+}
+
+.mapContainer :global(.leaflet-grab) {
+    cursor: pointer !important;
+}
+
+.mapContainer :global(.leaflet-tile-pane) {
+    filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+.mapContainer :global(.leaflet-control-attribution) {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+}
+
+.mapContainer :global(.leaflet-control-attribution a) {
+    color: #fff !important;
+}
+
+:global(.toast) {
+    background-color: rgba(33, 37, 41, 0.95) !important;
+}
+
+:global(.toast-header) {
+    color: #fff !important;
+    background-color: rgba(33, 37, 41, 0.95) !important;
+}
+
+:global(.toast .btn-close) {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}

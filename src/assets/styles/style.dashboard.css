@@ -1,0 +1,161 @@
+@keyframes pulse {
+    0% {
+        transform: scale(0.5);
+        opacity: 1;
+    }
+
+    70% {
+        transform: scale(2);
+        opacity: 0.3;
+    }
+
+    100% {
+        transform: scale(0.5);
+        opacity: 1;
+    }
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+    background-color: rgba(33, 33, 33, 0.95);
+    color: white;
+    border-radius: 8px;
+}
+
+.custom-popup .leaflet-popup-tip {
+    background-color: rgba(33, 33, 33, 0.95);
+}
+
+.dispatcher-popup {
+    min-width: 150px;
+    padding: 5px;
+}
+
+.dispatcher-popup hr {
+    border-color: #444;
+}
+
+/* Custom Icon Pill Tab Styles for Overview */
+.overview-icon-tabs.nav-pills .nav-link {
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #888; /* Softer inactive icon color */
+    padding: 0.35rem 0.75rem;
+    margin-right: 0.25rem;
+    border-radius: 8px; /* Slightly less rounded for a more modern look */
+    transition: all 0.2s ease-in-out;
+    line-height: 1;
+}
+
+.overview-icon-tabs.nav-pills .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.overview-icon-tabs.nav-pills .nav-link.active {
+    background-color: var(--bs-primary);
+    color: white;
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+.tooltip-inner {
+    background-color: #000;
+    color: #fff;
+}
+
+/* Tab content fade animation */
+.tab-content>.tab-pane {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.tab-content>.tab-pane:not(.active) {
+    opacity: 0;
+}
+
+.tab-content>.tab-pane.active {
+    opacity: 1;
+}
+
+.dashboard-alert-bar {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.custom-dark-table {
+    --bs-table-bg: #212121;
+    --bs-table-border-color: var(--bs-secondary);
+    --bs-table-striped-bg: #2c2c2c;
+    --bs-table-striped-color: #292929;
+    --bs-table-active-bg: #373737;
+    --bs-table-active-color: #292929;
+    --bs-table-hover-bg: #323232;
+    --bs-table-hover-color: #292929;
+    color: #fff;
+}
+
+/* Custom Pagination Styles */
+.custom-pagination .page-item .page-link {
+    background-color: transparent;
+    border-color: transparent;
+    color: #adb5bd;
+    margin: 0 2px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.custom-pagination .page-item.active .page-link {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: #fff;
+    z-index: 2;
+    font-weight: bold;
+}
+
+.custom-pagination .page-item:not(.active) .page-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.custom-pagination .page-item.disabled .page-link {
+    background-color: transparent;
+    color: #555;
+}
+
+.page-input {
+    width: 50px;
+    text-align: center;
+    background-color: #343a40;
+    border-color: #444;
+    color: #fff;
+}
+
+.page-input:focus {
+    background-color: #343a40;
+    border-color: var(--bs-primary);
+    color: #fff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+.stat-card {
+    background-color: #252525;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Style for the react-data-table-component pagination select dropdown */
+div[id^="pagination-rows-per-page-"] select {
+    background-color: #343a40;
+    color: #fff;
+    border-color: #444;
+}
+
+/* Add smooth transition to datatable rows */
+.rdt_TableRow {
+    transition: background-color 0.15s ease-in-out;
+}

@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import Globe from 'react-globe.gl';
+import Globe, { GlobeMethods } from 'react-globe.gl';
 import { SphereGeometry, MeshPhongMaterial, Mesh, TextureLoader } from 'three';
-import earthMap from '../assets/images/globe/earth.jpg';
-import earthBump from '../assets/images/globe/topology.png';
-import earthClouds from '../assets/images/globe/clouds.png';
+import earthMap from '../../assets/images/globe/earth.jpg';
+import earthBump from '../../assets/images/globe/topology.png';
+import earthClouds from '../../assets/images/globe/clouds.png';
 
 const About: React.FC = () => {
-    const globeEl = useRef<any>();
+    const globeEl = useRef<GlobeMethods>(undefined);
     const [arcsData, setArcsData] = useState<any[]>([]);
     const [clouds, setClouds] = useState<any>([]);
 
@@ -23,14 +23,19 @@ const About: React.FC = () => {
         }
 
         
-        new TextureLoader().load(earthClouds, texture => {
-            const clouds = new Mesh(
-                new SphereGeometry(globeEl.current.getGlobeRadius()  * (1 + 0.004), 75, 75),
-                new MeshPhongMaterial({ map: texture, transparent: true })
-            );
-            globeEl.current.scene().add(clouds);
-            setClouds(clouds);
-        });
+        if (globeEl.current) {
+            const globe = globeEl.current;
+            new TextureLoader().load(earthClouds, texture => {
+                if (globe) {
+                    const clouds = new Mesh(
+                        new SphereGeometry(globe.getGlobeRadius() * (1 + 0.004), 75, 75),
+                        new MeshPhongMaterial({ map: texture, transparent: true })
+                    );
+                    globe.scene().add(clouds);
+                    setClouds(clouds);
+                }
+            });
+        }
         
         const rotateClouds = () => {
             clouds.rotation.y += -0.006 * Math.PI / 180;
