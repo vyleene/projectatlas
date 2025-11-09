@@ -35,7 +35,7 @@ const MobileContent: React.FC<MobileDashboardProps> = ({ isResponderView }) => {
                     <MobileAlertBar details="M6.4 Detected - Shaking near Manila - Updated 5 mins ago" />
                 </div>
 
-                {selectedReport && (
+                {selectedReport && isResponderView && (
                     <div className={`report-detail-panel ${isClosing ? 'closing' : ''}`}>
                         <div className="report-detail-header">
                             <h6>Report Details</h6>
@@ -66,6 +66,7 @@ const MobileContent: React.FC<MobileDashboardProps> = ({ isResponderView }) => {
                                 <small>Description</small>
                                 <p className="report-description-text">{selectedReport.description}</p>
                             </div>
+                            <Button variant="success" className="w-100 mt-3">Resolve Report</Button>
                         </div>
                     </div>
                 )}

@@ -95,9 +95,7 @@ const MobileControls: React.FC<MobileControlsProps> = ({ onReportClick, isRespon
                         ))}
                     </ListGroup>
                 </Tab>
-                <Tab eventKey="share" title={<><Share size={14} /><small>Share</small></>}>
-                    <div className="p-3 text-center text-white-50">Share content will go here.</div>
-                </Tab>
+                <Tab eventKey="share" title={<><Share size={14} /><small>Share</small></>}></Tab>
             </Tabs>
         </div>
     );
