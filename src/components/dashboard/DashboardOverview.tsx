@@ -13,8 +13,8 @@ import {
     Legend,
     ChartOptions
 } from 'chart.js';
-import { extendedSeismicEvents } from './mockData';
-import { GraphUp, ExclamationTriangleFill, BarChartLineFill, ClockHistory } from 'react-bootstrap-icons';
+import { extendedSeismicEvents, mockDispatchers } from './mockData';
+import { GraphUp, ExclamationTriangleFill, BarChartLineFill, ClockHistory, Truck, PeopleFill, CheckCircleFill, SendFill, PauseCircleFill, LightningChargeFill } from 'react-bootstrap-icons';
 
 ChartJS.register(
     CategoryScale,
@@ -143,6 +143,77 @@ const SeismicChart: React.FC = React.memo(() => {
     );
 });
 
+const ResourceOverview: React.FC = React.memo(() => {
+    const resourceData = useMemo(() => {
+        const active = mockDispatchers.filter(d => d.status === 'active').length;
+        const enRoute = mockDispatchers.filter(d => d.status === 'en_route').length;
+        const standby = mockDispatchers.filter(d => d.status === 'standby').length;
+        const totalTeams = mockDispatchers.length;
+        const totalPersonnel = mockDispatchers.reduce((sum, d) => sum + d.personnel, 0);
+        const activePercent = (active / totalTeams) * 100;
+        const enRoutePercent = (enRoute / totalTeams) * 100;
+        const standbyPercent = (standby / totalTeams) * 100;
+
+        return {
+            active,
+            enRoute,
+            standby,
+            totalPersonnel,
+            totalTeams,
+            activePercent,
+            enRoutePercent,
+            standbyPercent,
+        };
+    }, []);
+
+    return (
+        <Row className="g-4">
+            <Col md={6} className="d-flex">
+                <Card className="h-100 w-100" style={{ backgroundColor: '#212121' }}>
+                    <Card.Body>
+                        <h6 className="mb-3 text-white"><LightningChargeFill className="me-2" />RECENT TEAM ACTIVITY</h6>
+                        <ListGroup variant="flush">
+                            {mockDispatchers.sort((a, b) => b.dispatchTime.getTime() - a.dispatchTime.getTime()).slice(0, 3).map(team => (
+                                <ListGroup.Item key={team.id} className="bg-transparent text-white d-flex justify-content-between align-items-center px-0">
+                                    <div>
+                                        <span className="fw-bold">{team.name}</span>
+                                        <small className="text-muted d-block">{team.sector}</small>
+                                    </div>
+                                    <small className="text-muted">{Math.round((Date.now() - team.dispatchTime.getTime()) / 60000)} min ago</small>
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    </Card.Body>
+                </Card>
+            </Col>
+            <Col md={6} className="d-flex">
+                <Card className="h-100 w-100" style={{ backgroundColor: '#212121' }}>
+                    <Card.Body>
+                        <h6 className="mb-3 text-white">TEAM SUMMARY</h6>
+                        <ListGroup variant="flush">
+                            <ListGroup.Item className="bg-transparent text-white d-flex justify-content-between align-items-center px-0">
+                                <span className="d-flex align-items-center"><Truck className="me-2 text-muted" /> Total Teams</span>
+                                <span className="fw-bold fs-5">{resourceData.totalTeams}</span>
+                            </ListGroup.Item>
+                            <ListGroup.Item className="bg-transparent text-white d-flex justify-content-between align-items-center px-0">
+                                <span className="d-flex align-items-center"><PeopleFill className="me-2 text-muted" /> Total Personnel</span>
+                                <span className="fw-bold fs-5">{resourceData.totalPersonnel}</span>
+                            </ListGroup.Item>
+                        </ListGroup>
+                        <hr className="text-secondary"/>
+                        <small className="text-muted d-block mb-2">STATUS DETAILS</small>
+                        <div className="d-flex justify-content-around text-center">
+                            <div><h5 className="fw-bold mb-0">{resourceData.active}</h5><small className="text-muted d-flex align-items-center"><CheckCircleFill className="text-success me-1" size={12}/> Active</small></div>
+                            <div><h5 className="fw-bold mb-0">{resourceData.enRoute}</h5><small className="text-muted d-flex align-items-center"><SendFill className="text-warning me-1" size={12}/> En Route</small></div>
+                            <div><h5 className="fw-bold mb-0">{resourceData.standby}</h5><small className="text-muted d-flex align-items-center"><PauseCircleFill className="text-info me-1" size={12}/> Standby</small></div>
+                        </div>
+                    </Card.Body>
+                </Card>
+            </Col>
+        </Row>
+    );
+});
+
 const eventColumns = [
     {
         name: 'Location',
@@ -194,6 +265,11 @@ const DashboardOverview: React.FC = React.memo(() => {
                         <Nav.Item>
                             <OverlayTrigger placement="bottom" overlay={<Tooltip id="tooltip-history">Event History</Tooltip>}>
                                 <Nav.Link eventKey="history"><ClockHistory size={18} /></Nav.Link>
+                            </OverlayTrigger>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <OverlayTrigger placement="bottom" overlay={<Tooltip id="tooltip-resources">Resource Overview</Tooltip>}>
+                                <Nav.Link eventKey="resources"><Truck size={18} /></Nav.Link>
                             </OverlayTrigger>
                         </Nav.Item>
                     </Nav>
@@ -251,6 +327,9 @@ const DashboardOverview: React.FC = React.memo(() => {
                                     </Card>
                                 </Col>
                             </Row>
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="resources">
+                            <ResourceOverview />
                         </Tab.Pane>
                     </Tab.Content>
                 </Card.Body>

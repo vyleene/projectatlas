@@ -19,7 +19,7 @@ interface MapLayerState {
 
 const Dashboard: React.FC = () => {
     const [mapLayers, setMapLayers] = useState<MapLayerState>({
-        populationDensity: false,
+        populationDensity: true,
         hazardReports: true,
         seismicActivity: true
     });

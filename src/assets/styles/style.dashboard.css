@@ -154,3 +154,66 @@ div[id^="pagination-rows-per-page-"] select {
 .rdt_TableRow {
     transition: background-color 0.15s ease-in-out;
 }
+
+/* Map Legend Styles */
+.map-legend {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: rgba(33, 33, 33, 0.9);
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    width: 180px;
+    font-size: 0.8rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.legend-symbol {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+}
+
+.epicenter-symbol {
+    background-color: rgba(255, 0, 51, 0.5);
+    border: 1px solid red;
+    border-radius: 50%;
+}
+
+.legend-gradient {
+    background: linear-gradient(to right, blue, lime, yellow, red);
+    height: 10px;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+/* Map Overlay Panel Styles */
+.map-overlay-panel {
+    position: absolute;
+    right: 20px;
+    z-index: 1000;
+    background-color: rgba(33, 33, 33, 0.9);
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    width: 180px;
+    font-size: 0.8rem;
+}
+
+.map-overlay-panel .form-check-input:checked {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.map-overlay-panel .form-check-input {
+    background-color: #495057;
+    border-color: #6c757d;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%28255,255,255,.25%29'/%3e%3c/svg%3e");
+}
