@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import Globe, { GlobeMethods } from 'react-globe.gl';
-// --- CHANGE 1: Import Clock for smooth animation ---
+
+import { Link } from 'react-router-dom';
+
 import { SphereGeometry, MeshPhongMaterial, Mesh, TextureLoader, Clock } from 'three';
 
 import earthMap from '../../assets/images/globe/earth.jpg';
@@ -96,12 +98,14 @@ const Header: React.FC = () => {
                 <Row className="gx-5 align-items-center justify-content-center">
                     <Col lg={10} className="text-center">
                         <h1 className="display-1 lh-1 mb-3"><b>When the earth trembles, <br/> Atlas endures.</b></h1>
-                        <Button variant="primary" size="lg" className="rounded-pill mt-4 px-4 py-2">
-                            <span className="d-flex align-items-center justify-content-center">
-                                <i className="bi-sliders me-2"></i>
-                                <span className="small">See Atlas in Action</span>
-                            </span>
-                        </Button>
+                        <Link to="/dashboard">
+                            <Button variant="primary" size="lg" className="rounded-pill mt-4 px-4 py-2">
+                                <span className="d-flex align-items-center justify-content-center">
+                                    <i className="bi-sliders me-2"></i>
+                                    <span className="small">See Atlas in Action</span>
+                                </span>
+                            </Button>
+                        </Link>
                     </Col>
                 </Row>
             </Container>
