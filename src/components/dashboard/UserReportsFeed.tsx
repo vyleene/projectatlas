@@ -19,12 +19,10 @@ const UserReportsFeed: React.FC = React.memo(() => {
         return mockUserReports.filter(report => filter === 'All' || report.priority === filter);
     }, [filter]);
 
-    // When the filter changes, reset to page 1
     useEffect(() => {
         setActivePage(1);
     }, [filter]);
     
-    // Pagination logic
     const indexOfLastReport = activePage * reportsPerPage;
     const indexOfFirstReport = indexOfLastReport - reportsPerPage;
     const currentReports = filteredReports.slice(indexOfFirstReport, indexOfLastReport);
@@ -48,7 +46,6 @@ const UserReportsFeed: React.FC = React.memo(() => {
         if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages) {
             handlePageChange(pageNum);
         } else {
-            // Reset input to current page if invalid
             setPageInput(activePage.toString());
         }
     };

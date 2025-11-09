@@ -17,28 +17,28 @@ const statusItems: StatusItem[] = [
         label: 'Safe',
         value: mockSituationStatus.safe,
         trend: mockSituationStatus.safeTrend as 'up' | 'down',
-        trendIsGood: true, // An increase in safe people is good
+        trendIsGood: true,
     },
     {
         icon: <HeartbreakFill size={24} className="text-danger" />,
         label: 'Injured',
         value: mockSituationStatus.injured,
         trend: mockSituationStatus.injuredTrend as 'up' | 'down',
-        trendIsGood: false, // An increase in injured people is bad
+        trendIsGood: false,
     },
     {
         icon: <ExclamationTriangleFill size={24} className="text-warning" />,
         label: 'Hazard',
         value: mockSituationStatus.hazard,
         trend: mockSituationStatus.hazardTrend as 'up' | 'down',
-        trendIsGood: false, // An increase in hazards is bad
+        trendIsGood: false,
     },
     {
         icon: <LifePreserver size={24} className="text-info" />,
         label: 'Rescue Needed',
         value: mockSituationStatus.rescueNeeded,
         trend: mockSituationStatus.rescueNeededTrend as 'up' | 'down',
-        trendIsGood: false, // An increase in people needing rescue is bad
+        trendIsGood: false,
     },
 ];
 
