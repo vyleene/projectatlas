@@ -80,7 +80,7 @@ const UserReportsFeed: React.FC = React.memo(() => {
                     <ListGroup.Item key={report.id} className="text-white py-2" style={{ backgroundColor: '#212121' }}>
                         <div className="d-flex align-items-center mb-1">
                             {priorityIcons[report.priority]}
-                            <small>{report.description}</small>
+                            <small>{report.title}</small>
                         </div>
                         <div className="d-flex justify-content-between">
                             <small className="text-muted">{report.location}</small>

@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Badge, Button } from 'react-bootstrap';
 import { PeopleFill } from 'react-bootstrap-icons';
 
-import MobileAlertBar from '../components/dashboard/mobile/MobileAlertBar';
-import MobileControls from '../components/dashboard/mobile/MobileControls';
-import MobileHeatmap from '../components/dashboard/mobile/MobileHeatmap';
+import MobileAlertBar from './MobileAlertBar';
+import MobileControls from './MobileControls';
+import MobileHeatmap from './MobileHeatmap';
 
 interface MobileDashboardProps {
     isResponderView: boolean;
 }
 
-const MobileDashboard: React.FC<MobileDashboardProps> = ({ isResponderView }) => {
+const MobileContent: React.FC<MobileDashboardProps> = ({ isResponderView }) => {
     const [selectedReport, setSelectedReport] = useState<any>(null);
     const [isClosing, setIsClosing] = useState(false);
 
@@ -23,12 +23,11 @@ const MobileDashboard: React.FC<MobileDashboardProps> = ({ isResponderView }) =>
         setIsClosing(true);
         setTimeout(() => {
             setSelectedReport(null);
-        }, 400); // Match animation duration
+        }, 400);
     };
 
     return (
         <div className="mobile-dashboard-container">
-            {/* The MobileHeatmap component now renders the entire map */}
             <MobileHeatmap />
 
             <div className="mobile-ui-overlay">
@@ -79,4 +78,4 @@ const MobileDashboard: React.FC<MobileDashboardProps> = ({ isResponderView }) =>
     );
 };
 
-export default MobileDashboard;
+export default MobileContent;

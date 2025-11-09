@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form } from 'react-bootstrap';
-import MobileDashboard from './MobileDashboard';
+import MobileContent from '../components/dashboard/mobile/MobileContent';
 import '../assets/styles/style.dashboard-mobile.css';
 
 const DashboardMobile: React.FC = () => {
@@ -8,12 +8,14 @@ const DashboardMobile: React.FC = () => {
 
     return (
         <div className="mobile-simulation-container">
-            <div className="mobile-device">
-                <div className="mobile-device-notch">
-                    <div className="mobile-device-camera"></div>
-                </div>
-                <div className="mobile-device-screen">
-                    <MobileDashboard isResponderView={isResponderView} />
+            <div className="mobile-device-wrapper">
+                <div className="mobile-device">
+                    <div className="mobile-device-notch">
+                        <div className="mobile-device-camera"></div>
+                    </div>
+                    <div className="mobile-device-screen"> 
+                        <MobileContent isResponderView={isResponderView} />
+                    </div>
                 </div>
             </div>
             <div className="view-toggle-switch">

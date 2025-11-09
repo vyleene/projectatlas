@@ -155,7 +155,6 @@ div[id^="pagination-rows-per-page-"] select {
     transition: background-color 0.15s ease-in-out;
 }
 
-/* Map Legend Styles */
 .map-legend {
     position: absolute;
     top: 20px;
@@ -194,7 +193,6 @@ div[id^="pagination-rows-per-page-"] select {
     margin-bottom: 4px;
 }
 
-/* Map Overlay Panel Styles */
 .map-overlay-panel {
     position: absolute;
     right: 20px;
