@@ -127,7 +127,7 @@ const MainMap: React.FC<MainMapProps> = React.memo(({ mapLayers, handleMapLayerC
                         <Form.Check 
                             type="switch"
                             id="population-density-switch"
-                            label="Population Density"
+                            label="Impacted Population Density"
                             checked={mapLayers.populationDensity}
                             onChange={() => handleMapLayerChange('populationDensity')}
                         />

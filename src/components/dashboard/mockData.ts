@@ -1,4 +1,6 @@
 import * as turf from '@turf/turf';
+import { MultiPolygon } from 'geojson';
+
 
 export const extendedSeismicEvents = [
     {
@@ -143,37 +145,89 @@ export const mockUserReports = [
     { id: 12, priority: 'Low', message: 'Suspicious activity reported', location: 'Sector 1, Area B', timestamp: new Date(Date.now() - 50 * 60 * 1000) },
 ];
 
+// Philippine archipelago (simplified)
+const philippineArchipelago: MultiPolygon = {
+  type: "MultiPolygon",
+  coordinates: [
+    // Luzon
+    [[[120.0, 18.5], [122.5, 18.5], [122.0, 16.0], [124.0, 14.0], [121.0, 13.5], [119.5, 15.0], [120.0, 18.5]]],
+    // Visayas
+    [[[122.5, 12.5], [125.5, 12.0], [125.0, 9.5], [122.0, 10.0], [122.5, 12.5]]],
+    // Mindanao
+    [[[121.5, 8.5], [127, 8.5], [126.5, 5.5], [121.0, 5.5], [121.5, 8.5]]],
+    // Palawan
+    [[[118.0, 11.0], [120.0, 9.0], [119.5, 8.5], [117.5, 10.5], [118.0, 11.0]]]
+  ]
+};
+
+// City data
 const cities = [
-  { coords: [14.5995, 120.9842], density: 1.0, radius: 15 },   // Manila
-  { coords: [14.6760, 121.0437], density: 0.9, radius: 12 },   // Quezon City
-  { coords: [10.3157, 123.8854], density: 0.85, radius: 10 },  // Cebu
-  { coords: [7.1907, 125.4553], density: 0.7, radius: 12 },    // Davao
-  { coords: [8.4542, 124.6319], density: 0.75, radius: 8 },    // Cagayan de Oro
+  { name: 'Manila City', coords: [14.5995, 120.9842], population: 1846513, radius: 4 },
+  { name: 'Davao', coords: [7.1907, 125.4553], population: 1776949, radius: 8 },
+  { name: 'Iligan City', coords: [8.2275, 124.2452], population: 363115, radius: 5 },
+  { name: 'Cagayan De Oro', coords: [8.4542, 124.6319], population: 728402, radius: 6 },
+  { name: 'Zamboanga City', coords: [6.9214, 122.079], population: 977234, radius: 7 },
+  { name: 'General Santos', coords: [6.1167, 125.1667], population: 697315, radius: 6 },
 ];
 
-function generatePopulationData(): [number, number, number][] {
-  const points: [number, number, number][] = [];
-  
-  cities.forEach(city => {
-    const [lat, lng] = city.coords;
-    const pointsForCity = Math.floor(city.density * 20);
-    
-    for (let i = 0; i < pointsForCity; i++) {
-      const angle = Math.random() * 360;
-      const distance = Math.sqrt(Math.random()) * city.radius;
-      
-      const center = turf.point([lng, lat]);
-      const destination = turf.destination(center, distance, angle, { units: 'kilometers' });
-      const [newLng, newLat] = destination.geometry.coordinates;
-      
-      const distanceFactor = 1 - (distance / city.radius);
-      const pointDensity = city.density * distanceFactor * (0.8 + Math.random() * 0.4);
-      
-      points.push([newLat, newLng, Math.max(0.1, pointDensity)]);
-    }
-  });
-  
-  return points;
+// Helper: calculate earthquake-affected zones
+function getAffectedAreas(events = seismicEvents) {
+  return events.map(ev => ({
+    coords: ev.location,
+    radius: ev.magnitude * 10, // example scale factor
+    severity: ev.magnitude / 10 // normalize severity
+  }));
 }
 
-export const mockPopulationData = generatePopulationData();
+const maxPopulation = Math.max(...cities.map(c => c.population));
+
+export function generateRealisticPopulationData(): [number, number, number][] {
+  const rawPoints: [number, number, number][] = [];
+  const affectedZones = getAffectedAreas();
+
+  cities.forEach(city => {
+    const [lat, lng] = city.coords;
+    const center = turf.point([lng, lat]); // Turf expects [lng, lat]
+    const normalizedDensity = city.population / maxPopulation;
+    const numPoints = Math.ceil(Math.log10(city.population) * 50);
+
+    for (let i = 0; i < numPoints; i++) {
+      const angle = Math.random() * 360;
+      const distance = Math.pow(Math.random(), 1.5) * city.radius;
+      const point = turf.destination(center, distance, angle, { units: 'kilometers' });
+      const [pointLng, pointLat] = point.geometry.coordinates;
+
+      const distFromCenter = turf.distance(center, point, { units: 'kilometers' });
+      const urbanFactor = Math.max(0.2, 1 - distFromCenter / city.radius);
+      let pointDensity = normalizedDensity * urbanFactor;
+
+      affectedZones.forEach(zone => {
+        const zoneCenter = turf.point([zone.coords[1], zone.coords[0]]);
+        const distFromEpicenter = turf.distance(point, zoneCenter, { units: 'kilometers' });
+        if (distFromEpicenter < zone.radius) {
+          const impactFactor = 1 - distFromEpicenter / zone.radius;
+          pointDensity = Math.min(1.0, pointDensity + zone.severity * impactFactor * 0.3);
+        }
+      });
+
+      const variance = 0.7 + Math.random() * 0.6;
+      pointDensity *= variance;
+
+      rawPoints.push([pointLat, pointLng, Math.max(0.1, Math.min(1.0, pointDensity))]);
+    }
+
+    // Always include city center
+    rawPoints.push([lat, lng, normalizedDensity]);
+  });
+
+  // Filter points to keep only those on land
+  const landmassPoints = rawPoints.filter(p => {
+    const [lat, lng] = p;
+    const pointToCheck = turf.point([lng, lat]);
+    return turf.booleanPointInPolygon(pointToCheck, philippineArchipelago);
+  });
+
+  return landmassPoints;
+}
+
+export const mockPopulationData = generateRealisticPopulationData();
