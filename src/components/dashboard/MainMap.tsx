@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Form } from 'react-bootstrap';
 import { MapContainer, TileLayer, useMap, Pane } from 'react-leaflet';
-import L from 'leaflet';
+import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.heat';
 import { seismicEvents, mockPopulationData } from './mockData';
@@ -17,11 +17,11 @@ const SeismicCirclesLayer: React.FC<{ mapLayers: MapLayerState }> = React.memo((
     const map = useMap();
 
     React.useEffect(() => {
-        const circles: L.Layer[] = [];
+        const circles: leaflet.Layer[] = [];
 
         if (mapLayers.seismicActivity) {
             seismicEvents.forEach(event => {
-                const circle = L.circle(event.location as L.LatLngTuple, {
+                const circle = leaflet.circle(event.location as leaflet.LatLngTuple, {
                     color: 'red',
                     fillColor: '#f03',
                     fillOpacity: 0.5,
@@ -47,7 +47,7 @@ const PopulationHeatmapLayer: React.FC<{ mapLayers: MapLayerState }> = React.mem
         let heatLayer: any;
 
         if (mapLayers.populationDensity) {
-            heatLayer = (L as any).heatLayer(mockPopulationData, {
+            heatLayer = (leaflet as any).heatLayer(mockPopulationData, {
                 radius: 25,
                 blur: 15,
                 maxZoom: 10,
@@ -83,7 +83,7 @@ const MainMap: React.FC<MainMapProps> = React.memo(({ mapLayers, handleMapLayerC
             <Card.Body className="p-3" style={{ position: 'relative' }}>
                 <div style={{ height: '515px' }}>
                     <MapContainer
-                        center={[12.8797, 121.7740]} // Philippines center
+                        center={[12.8797, 121.7740]}
                         zoom={6}
                         style={{ height: '100%', width: '100%' }}
                     >

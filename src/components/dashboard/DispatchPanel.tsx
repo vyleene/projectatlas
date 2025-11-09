@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Card, Badge, ListGroup, Button, Modal, Form, InputGroup, Pagination } from 'react-bootstrap';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { mockDispatchers } from './mockData'; 
-import DispatcherMarkers from './DispatcherMarkers';
+import L from 'leaflet';
 import { BroadcastPin, CheckCircleFill, SendFill, PauseCircleFill, ListUl, Search, PeopleFill, XCircle } from 'react-bootstrap-icons';
 
 const statusMap: { [key: string]: { variant: string; label: string } } = {
@@ -14,6 +14,31 @@ const statusMap: { [key: string]: { variant: string; label: string } } = {
 const getStatusInfo = (status: string) => {
     return statusMap[status] || { variant: 'secondary', label: 'Unknown' };
 };
+
+const personnelIcon = new L.Icon({
+    iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+    iconSize: [12, 20],
+    iconAnchor: [6, 20],
+    popupAnchor: [0, -20],
+    shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+    shadowSize: [20, 20],
+});
+
+const PersonnelMarkers: React.FC = React.memo(() => {
+    return (
+        <>
+            {mockDispatchers.map(team => 
+                Array.from({ length: team.personnel }).map((_, index) => {
+                    const offsetLat = (Math.random() - 0.5) * 0.01;
+                    const offsetLng = (Math.random() - 0.5) * 0.01;
+                    const personnelPosition: [number, number] = [team.location[0] + offsetLat, team.location[1] + offsetLng];
+
+                    return <Marker key={`${team.id}-p${index}`} position={personnelPosition} icon={personnelIcon} />;
+                })
+            )}
+        </>
+    );
+});
 
 const DispatchPanel: React.FC = React.memo(() => {
     const [showUnitStatusModal, setShowUnitStatusModal] = useState(false);
@@ -32,12 +57,10 @@ const DispatchPanel: React.FC = React.memo(() => {
             dispatcher.name.toLowerCase().includes(searchTerm.toLowerCase())
         ), [searchTerm]);
 
-    // Reset page when search term changes
     useEffect(() => {
         setModalActivePage(1);
     }, [searchTerm]);
 
-    // Pagination logic for modal
     const dispatchersPerPage = 5;
     const totalModalPages = Math.ceil(filteredDispatchers.length / dispatchersPerPage);
     const indexOfLastDispatcher = modalActivePage * dispatchersPerPage;
@@ -62,7 +85,7 @@ const DispatchPanel: React.FC = React.memo(() => {
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             attribution='&copy; OpenStreetMap contributors'
                         />
-                        <DispatcherMarkers />
+                        <PersonnelMarkers />
                     </MapContainer>
                 </div>
 
