@@ -1,5 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 
+import '../assets/styles/style.home.css'
+
 import Navigation from '../components/home/Navigation';
 import Header from '../components/home/Header';
 
