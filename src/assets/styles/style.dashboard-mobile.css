@@ -317,10 +317,6 @@ body {
     filter: invert(1) grayscale(100%) brightness(200%);
 }
 
-.report-detail-body {
-    /* This class is for structure, specific item styling is below */
-}
-
 .report-title-container {
     display: flex;
     justify-content: space-between;
