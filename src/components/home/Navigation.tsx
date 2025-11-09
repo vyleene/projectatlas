@@ -32,19 +32,15 @@ const Navigation: React.FC = () => {
                 <Navbar.Collapse id="navbarResponsive">
                 <Nav className="ms-auto me-4 my-3 my-lg-0">
                     <Nav.Link as={Link} to="/" className="me-lg-3">Home</Nav.Link>
-                    <Nav.Link as={Link} to="/dashboard" className="me-lg-3">Dashboard</Nav.Link>
+                    <Nav.Link as={Link} to="/dashboard" className="me-lg-3">Dispatch Dashboard</Nav.Link>
+                    <Nav.Link as={Link} to="/dashboard/mobile" className="me-lg-3">Mobile Dashboard</Nav.Link>
+                    <Nav.Link as={Link} to="/login" className="me-lg-3">Login</Nav.Link>
+                    <Nav.Link as={Link} to="/register" className="me-lg-3">Register</Nav.Link>
                 </Nav>
                 <div className="d-flex gap-2">
-                    <Link to="/login" className="text-decoration-none">
-                        <Button variant="outline-light" className="rounded-pill px-3 mb-2 mb-lg-0">
-                            Login
-                        </Button>
-                    </Link>
-                    <Link to="/register" className="text-decoration-none">
-                        <Button variant="primary" className="rounded-pill px-3 mb-2 mb-lg-0">
-                            Register
-                        </Button>
-                    </Link>
+                    <Button variant="primary" className="rounded-pill px-3 mb-2 mb-lg-0">
+                        Send Feedback
+                    </Button>
                 </div>
                 </Navbar.Collapse>
             </Container>
