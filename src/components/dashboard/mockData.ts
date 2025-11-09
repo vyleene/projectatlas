@@ -119,13 +119,13 @@ export const mockDispatchers = [
 
 export const mockSituationStatus = {
     safe: 1150,
-    safeTrend: 'up', // 'up' is good
+    safeTrend: 'up',
     hazard: 42,
-    hazardTrend: 'down', // 'down' is good
+    hazardTrend: 'down',
     injured: 25,
-    injuredTrend: 'down', // 'down' is good
+    injuredTrend: 'down',
     rescueNeeded: 15,
-    rescueNeededTrend: 'up', // 'up' is bad
+    rescueNeededTrend: 'up',
     populationDensity: 'medium',
     alertLevel: 3
 };
@@ -140,7 +140,7 @@ function generateClusteredReports() {
         Low: ['Roads blocked by debris', 'Minor tremors felt', 'Request for information', 'Fallen trees on road', 'Building with minor cracks']
     };
 
-    const populationPoints = mockPopulationData; // Use the generated population data
+    const populationPoints = mockPopulationData;
 
     for (const event of seismicEvents) {
         const numReports = Math.round(event.magnitude * 2) + 8; // More reports for higher magnitude events
@@ -164,16 +164,29 @@ function generateClusteredReports() {
             const priorityRoll = Math.random() * (density * 0.5 + event.magnitude / 10);
             let priority: 'High' | 'Med' | 'Low' = priorityRoll > 0.6 ? 'High' : priorityRoll > 0.3 ? 'Med' : 'Low';
 
+            const statusRoll = Math.random();
+            let status = 'Active';
+            if (statusRoll > 0.9) {
+                status = 'Resolved';
+            } else if (statusRoll > 0.7) {
+                status = 'Under Review';
+            }
+
             const messageOptions = reportMessages[priority];
             const message = messageOptions[Math.floor(Math.random() * messageOptions.length)];
 
             reports.push({
                 id: reportId++,
-                priority,
-                message,
+                priority: priority,
+                category: priority === 'High' ? (Math.random() > 0.5 ? 'Injury' : 'Hazard') : 'Hazard',
+                title: message,
+                status: status,
+                description: `${message} in the vicinity of ${event.city}. Reported at ${new Date().toLocaleTimeString()}.`,
+                peopleAffected: Math.floor(Math.random() * (priority === 'High' ? 20 : 5)),
                 location: `Vicinity of ${event.city}`,
                 timestamp: new Date(Date.now() - Math.floor(Math.random() * 60) * 60 * 1000),
-                coords: [lat, lng]
+                coords: [lat, lng],
+                distance: `${(turf.distance(center, turf.point([lng, lat]))).toFixed(1)} km`
             });
         }
     }
@@ -190,7 +203,6 @@ const cities = [
   { name: 'General Santos', coords: [6.1167, 125.1667], population: 697315, radius: 6 },
 ];
 
-// Philippine archipelago (simplified)
 const philippineArchipelago: MultiPolygon = {
   type: "MultiPolygon",
   coordinates: [
@@ -205,12 +217,11 @@ const philippineArchipelago: MultiPolygon = {
   ]
 };
 
-// Helper: calculate earthquake-affected zones
 function getAffectedAreas(events = seismicEvents) {
   return events.map(ev => ({
     coords: ev.location,
-    radius: ev.magnitude * 10, // example scale factor
-    severity: ev.magnitude / 10 // normalize severity
+    radius: ev.magnitude * 10,
+    severity: ev.magnitude / 10
   }));
 }
 
@@ -265,6 +276,6 @@ export function generateRealisticPopulationData(): [number, number, number][] {
   return landmassPoints;
 }
 
-export const mockPopulationData = generateRealisticPopulationData();
+export const mockPopulationData = generateRealisticPopulationData(); // Must be exported before mockUserReports
 
 export const mockUserReports = generateClusteredReports();

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Form } from 'react-bootstrap';
 import MobileDashboard from './MobileDashboard';
 import '../assets/styles/style.dashboard-mobile.css';
 
 const DashboardMobile: React.FC = () => {
+    const [isResponderView, setIsResponderView] = useState(true);
+
     return (
         <div className="mobile-simulation-container">
             <div className="mobile-device">
@@ -10,11 +13,17 @@ const DashboardMobile: React.FC = () => {
                     <div className="mobile-device-camera"></div>
                 </div>
                 <div className="mobile-device-screen">
-                    <MobileDashboard />
+                    <MobileDashboard isResponderView={isResponderView} />
                 </div>
             </div>
-            <div className="simulation-note">
-                This is a simulation of the mobile view. The dashboard layout has been adapted for a smaller screen.
+            <div className="view-toggle-switch">
+                <Form.Check 
+                    type="switch"
+                    id="view-mode-switch"
+                    label={isResponderView ? 'Responder View' : 'Citizen View'}
+                    checked={isResponderView}
+                    onChange={() => setIsResponderView(!isResponderView)}
+                />
             </div>
         </div>
     );

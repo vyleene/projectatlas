@@ -108,7 +108,7 @@ const HazardReportsLayer: React.FC<{ show: boolean; }> = ({ show }) => {
                 <Marker key={report.id} position={report.coords as leaflet.LatLngTuple} icon={hazardIcon}>
                     <Popup>
                         <strong className={priorityColorMap[report.priority] || 'text-secondary'}>Priority: {report.priority}</strong><br />
-                        <strong>Message:</strong> {report.message}<br />
+                        <strong>Message:</strong> {report.description}<br />
                         <strong>Location:</strong> {report.location}<br />
                         <strong>Time:</strong> {report.timestamp.toLocaleTimeString()}
                     </Popup>
