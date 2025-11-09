@@ -279,7 +279,6 @@ const DashboardOverview: React.FC = React.memo(() => {
                     <Tab.Content>
                         <Tab.Pane eventKey="analysis">
                             <Row className="g-4">
-                                {/* Seismic Activity Section */}
                                 <Col md={8} className="d-flex"> 
                                     <Card className="h-100 w-100" style={{ backgroundColor: '#212121' }}>
                                         <Card.Body>
@@ -287,8 +286,6 @@ const DashboardOverview: React.FC = React.memo(() => {
                                         </Card.Body>
                                     </Card>
                                 </Col>
-
-                                {/* Top 5 Most Active Regions */}
                                 <Col md={4} className="d-flex">
                                     <Card className="h-100 w-100" style={{ backgroundColor: '#212121' }}>
                                         <Card.Body>
