@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Tabs, Tab, Button, ListGroup, Badge } from 'react-bootstrap';
 import { ShieldCheck, ExclamationTriangle, HeartbreakFill, GeoAlt, FileText, People, Share, TelephoneFill, ChatTextFill } from 'react-bootstrap-icons';
-import { mockUserReports } from '../mockData';
+import { mockUserReports, mockContacts } from '../mockData';
 
 interface MobileControlsProps {
     onReportClick: (report: any) => void;
@@ -9,15 +9,6 @@ interface MobileControlsProps {
 }
 
 const MobileControls: React.FC<MobileControlsProps> = ({ onReportClick, isResponderView }) => {
-    const mockContacts = [
-        { id: 1, name: 'National Emergency Hotline', type: 'Emergency' },
-        { id: 2, name: 'Local Police Department', type: 'Emergency' },
-        { id: 3, name: 'City Fire Department', type: 'Emergency' },
-        { id: 4, name: 'Jane Doe', type: 'Personal' },
-        { id: 5, name: 'John Smith', type: 'Personal' },
-        { id: 6, name: 'Maria Dela Cruz', type: 'Personal' },
-        { id: 7, name: 'Local Hospital', type: 'Emergency' },
-    ];
     const [showActions, setShowActions] = useState(false);
 
     const handleSosClick = () => {

@@ -1,12 +1,7 @@
 import React from 'react';
 import { Card, Badge, Button, Stack } from 'react-bootstrap';
 import { PersonCircle, BoxArrowRight, GearFill } from 'react-bootstrap-icons';
-
-const mockUser = {
-    name: 'Luke',
-    role: 'Lead Dispatcher',
-    status: 'Online'
-};
+import { mockUser } from './mockData';
 
 const UserProfilePanel: React.FC = () => {
     return (

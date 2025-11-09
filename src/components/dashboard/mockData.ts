@@ -1,6 +1,11 @@
 import * as turf from '@turf/turf';
 import { MultiPolygon } from 'geojson';
 
+export const mockUser = {
+    name: 'Michael',
+    role: 'Lead Dispatcher',
+    status: 'Online'
+};
 
 export const extendedSeismicEvents = [
     {
@@ -279,3 +284,13 @@ export function generateRealisticPopulationData(): [number, number, number][] {
 export const mockPopulationData = generateRealisticPopulationData(); // Must be exported before mockUserReports
 
 export const mockUserReports = generateClusteredReports();
+
+export const mockContacts = [
+    { id: 1, name: 'National Emergency Hotline', type: 'Emergency' },
+    { id: 2, name: 'Local Police Department', type: 'Emergency' },
+    { id: 3, name: 'City Fire Department', type: 'Emergency' },
+    { id: 4, name: 'Jane Doe', type: 'Personal' },
+    { id: 5, name: 'John Smith', type: 'Personal' },
+    { id: 6, name: 'Maria Dela Cruz', type: 'Personal' },
+    { id: 7, name: 'Local Hospital', type: 'Emergency' },
+];
