@@ -130,19 +130,64 @@ export const mockSituationStatus = {
     alertLevel: 3
 };
 
-export const mockUserReports = [
-    { id: 1, priority: 'High', message: 'Structural damage reported', location: 'Sector 4, Area B', timestamp: new Date(Date.now() - 2 * 60 * 1000) },
-    { id: 2, priority: 'Med', message: 'Power outages in residential area', location: 'Downtown District', timestamp: new Date(Date.now() - 5 * 60 * 1000) },
-    { id: 3, priority: 'Low', message: 'Roads blocked by debris', location: 'Sector 1, Area A', timestamp: new Date(Date.now() - 10 * 60 * 1000) },
-    { id: 4, priority: 'High', message: 'Building collapse reported', location: 'Sector 3, Area C', timestamp: new Date(Date.now() - 12 * 60 * 1000) },
-    { id: 5, priority: 'Med', message: 'Flooding in sub-district', location: 'Sector 2, Area D', timestamp: new Date(Date.now() - 15 * 60 * 1000) },
-    { id: 6, priority: 'Low', message: 'Minor tremors felt', location: 'North Suburbs', timestamp: new Date(Date.now() - 20 * 60 * 1000) },
-    { id: 7, priority: 'High', message: 'Fire reported in industrial park', location: 'Sector 5, Area F', timestamp: new Date(Date.now() - 22 * 60 * 1000) },
-    { id: 8, priority: 'Med', message: 'Water main break', location: 'West End', timestamp: new Date(Date.now() - 30 * 60 * 1000) },
-    { id: 9, priority: 'Low', message: 'Request for information', location: 'City Center', timestamp: new Date(Date.now() - 35 * 60 * 1000) },
-    { id: 10, priority: 'High', message: 'Multiple injuries at mall', location: 'Uptown Mall', timestamp: new Date(Date.now() - 40 * 60 * 1000) },
-    { id: 11, priority: 'Med', message: 'Traffic accident on highway', location: 'Highway 101', timestamp: new Date(Date.now() - 45 * 60 * 1000) },
-    { id: 12, priority: 'Low', message: 'Suspicious activity reported', location: 'Sector 1, Area B', timestamp: new Date(Date.now() - 50 * 60 * 1000) },
+function generateClusteredReports() {
+    const reports = [];
+    let reportId = 1;
+
+    const reportMessages = {
+        High: ['Structural damage reported', 'Building collapse reported', 'Request for medical assistance', 'Multiple injuries reported', 'Fire reported'],
+        Med: ['Power outages in area', 'Flooding in sub-district', 'Water main break', 'Communication lines are down', 'Requesting food and water'],
+        Low: ['Roads blocked by debris', 'Minor tremors felt', 'Request for information', 'Fallen trees on road', 'Building with minor cracks']
+    };
+
+    const populationPoints = mockPopulationData; // Use the generated population data
+
+    for (const event of seismicEvents) {
+        const numReports = Math.round(event.magnitude * 2) + 8; // More reports for higher magnitude events
+        const spreadRadius = event.magnitude * 8; // Wider spread for higher magnitude
+        const center = turf.point(event.location.slice().reverse()); // Turf uses [lng, lat]
+
+        // Find populated points within the earthquake's impact radius
+        const affectedPopulationPoints = populationPoints.filter(p => {
+            const pointLocation = turf.point([p[1], p[0]]);
+            return turf.distance(center, pointLocation, { units: 'kilometers' }) <= spreadRadius;
+        });
+
+        if (affectedPopulationPoints.length === 0) continue; // Skip if no populated areas are affected
+
+        for (let i = 0; i < numReports; i++) {
+            // Pick a random point from the affected populated areas
+            const randomPoint = affectedPopulationPoints[Math.floor(Math.random() * affectedPopulationPoints.length)];
+            const [lat, lng, density] = randomPoint;
+
+            // Determine priority based on the point's density and event magnitude
+            const priorityRoll = Math.random() * (density * 0.5 + event.magnitude / 10);
+            let priority: 'High' | 'Med' | 'Low' = priorityRoll > 0.6 ? 'High' : priorityRoll > 0.3 ? 'Med' : 'Low';
+
+            const messageOptions = reportMessages[priority];
+            const message = messageOptions[Math.floor(Math.random() * messageOptions.length)];
+
+            reports.push({
+                id: reportId++,
+                priority,
+                message,
+                location: `Vicinity of ${event.city}`,
+                timestamp: new Date(Date.now() - Math.floor(Math.random() * 60) * 60 * 1000),
+                coords: [lat, lng]
+            });
+        }
+    }
+    return reports;
+}
+
+// City data
+const cities = [
+  { name: 'Manila City', coords: [14.5995, 120.9842], population: 1846513, radius: 4 },
+  { name: 'Davao', coords: [7.1907, 125.4553], population: 1776949, radius: 8 },
+  { name: 'Iligan City', coords: [8.2275, 124.2452], population: 363115, radius: 5 },
+  { name: 'Cagayan De Oro', coords: [8.4542, 124.6319], population: 728402, radius: 6 },
+  { name: 'Zamboanga City', coords: [6.9214, 122.079], population: 977234, radius: 7 },
+  { name: 'General Santos', coords: [6.1167, 125.1667], population: 697315, radius: 6 },
 ];
 
 // Philippine archipelago (simplified)
@@ -159,16 +204,6 @@ const philippineArchipelago: MultiPolygon = {
     [[[118.0, 11.0], [120.0, 9.0], [119.5, 8.5], [117.5, 10.5], [118.0, 11.0]]]
   ]
 };
-
-// City data
-const cities = [
-  { name: 'Manila City', coords: [14.5995, 120.9842], population: 1846513, radius: 4 },
-  { name: 'Davao', coords: [7.1907, 125.4553], population: 1776949, radius: 8 },
-  { name: 'Iligan City', coords: [8.2275, 124.2452], population: 363115, radius: 5 },
-  { name: 'Cagayan De Oro', coords: [8.4542, 124.6319], population: 728402, radius: 6 },
-  { name: 'Zamboanga City', coords: [6.9214, 122.079], population: 977234, radius: 7 },
-  { name: 'General Santos', coords: [6.1167, 125.1667], population: 697315, radius: 6 },
-];
 
 // Helper: calculate earthquake-affected zones
 function getAffectedAreas(events = seismicEvents) {
@@ -231,3 +266,5 @@ export function generateRealisticPopulationData(): [number, number, number][] {
 }
 
 export const mockPopulationData = generateRealisticPopulationData();
+
+export const mockUserReports = generateClusteredReports();

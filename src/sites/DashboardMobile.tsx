@@ -10,7 +10,6 @@ const DashboardMobile: React.FC = () => {
                     <div className="mobile-device-camera"></div>
                 </div>
                 <div className="mobile-device-screen">
-                    {/* The mobile-specific dashboard is rendered here */}
                     <MobileDashboard />
                 </div>
             </div>

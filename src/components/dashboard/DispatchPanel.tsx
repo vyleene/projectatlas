@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Card, Badge, ListGroup, Button, Modal, Form, InputGroup, Pagination } from 'react-bootstrap';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { mockDispatchers } from './mockData'; 
 import leaflet from 'leaflet';
 import { BroadcastPin, CheckCircleFill, SendFill, PauseCircleFill, ListUl, Search, PeopleFill, XCircle } from 'react-bootstrap-icons';
@@ -15,27 +15,46 @@ const getStatusInfo = (status: string) => {
     return statusMap[status] || { variant: 'secondary', label: 'Unknown' };
 };
 
-const personnelIcon = new leaflet.Icon({
-    iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-    iconSize: [12, 20],
-    iconAnchor: [6, 20],
-    popupAnchor: [0, -20],
-    shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-    shadowSize: [20, 20],
-});
+const createPulsingIcon = (color: string) => {
+    return leaflet.divIcon({
+        className: 'custom-div-icon',
+        html: `
+      <div style="
+        position: relative;
+        width: 15px;
+        height: 15px;
+      ">
+        <div style="
+          position: absolute;
+          width: 15px;
+          height: 15px;
+          background-color: ${color};
+          border-radius: 50%;
+          animation: pulse 1.5s infinite;
+        "></div>
+      </div>
+    `,
+        iconSize: [15, 15],
+        iconAnchor: [7.5, 7.5]
+    });
+};
 
-const PersonnelMarkers: React.FC = React.memo(() => {
+const DispatcherMarkers: React.FC = React.memo(() => {
     return (
         <>
-            {mockDispatchers.map(team => 
-                Array.from({ length: team.personnel }).map((_, index) => {
-                    const offsetLat = (Math.random() - 0.5) * 0.01;
-                    const offsetLng = (Math.random() - 0.5) * 0.01;
-                    const personnelPosition: [number, number] = [team.location[0] + offsetLat, team.location[1] + offsetLng];
-
-                    return <Marker key={`${team.id}-p${index}`} position={personnelPosition} icon={personnelIcon} />;
-                })
-            )}
+            {mockDispatchers.map(dispatcher => {
+                const markerColor = dispatcher.status === 'active' ? '#00ff00' :
+                    dispatcher.status === 'en_route' ? '#ffaa00' : '#0088ff';
+                return (
+                    <Marker
+                        key={dispatcher.id}
+                        position={[dispatcher.location[0], dispatcher.location[1]]}
+                        icon={createPulsingIcon(markerColor)}
+                    >
+                        <Popup className="custom-popup">{/* Note: .custom-popup styling is in a global css file */}</Popup>
+                    </Marker>
+                );
+            })}
         </>
     );
 });
@@ -85,7 +104,7 @@ const DispatchPanel: React.FC = React.memo(() => {
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             attribution='&copy; OpenStreetMap contributors'
                         />
-                        <PersonnelMarkers />
+                        <DispatcherMarkers />
                     </MapContainer>
                 </div>
 

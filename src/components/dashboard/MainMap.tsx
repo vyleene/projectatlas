@@ -1,17 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Form } from 'react-bootstrap';
-import { MapContainer, TileLayer, useMap, Pane } from 'react-leaflet';
+import { MapContainer, TileLayer, useMap, Pane, Marker, Popup } from 'react-leaflet';
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.heat';
-import { seismicEvents, mockPopulationData } from './mockData';
-import DispatcherMarkers from './DispatcherMarkers';
+import { seismicEvents, mockPopulationData, mockUserReports } from './mockData';
 
 interface MapLayerState {
     populationDensity: boolean;
     hazardReports: boolean;
     seismicActivity: boolean;
 }
+
+const hazardIcon = new leaflet.DivIcon({
+    html: `<div class="hazard-marker-icon"></div>`,
+    className: '',
+    iconSize: [12, 12],
+    iconAnchor: [6, 6]
+});
+
+const priorityColorMap: { [key: string]: string } = {
+    High: 'text-danger',
+    Med: 'text-warning',
+    Low: 'text-info'
+};
 
 const SeismicCirclesLayer: React.FC<{ mapLayers: MapLayerState }> = React.memo(({ mapLayers }) => {
     const map = useMap();
@@ -72,6 +84,40 @@ const PopulationHeatmapLayer: React.FC<{ mapLayers: MapLayerState }> = React.mem
     return null;
 });
 
+const HazardReportsLayer: React.FC<{ show: boolean; }> = ({ show }) => {
+    const map = useMap();
+    const [currentZoom, setCurrentZoom] = useState(map.getZoom());
+
+    useEffect(() => {
+        const handleZoom = () => {
+            setCurrentZoom(map.getZoom());
+        };
+
+        map.on('zoomend', handleZoom);
+
+        return () => {
+            map.off('zoomend', handleZoom);
+        };
+    }, [map]);
+
+    if (!show || currentZoom < 9) return null;
+
+    return (
+        <>
+            {mockUserReports.map(report => (
+                <Marker key={report.id} position={report.coords as leaflet.LatLngTuple} icon={hazardIcon}>
+                    <Popup>
+                        <strong className={priorityColorMap[report.priority] || 'text-secondary'}>Priority: {report.priority}</strong><br />
+                        <strong>Message:</strong> {report.message}<br />
+                        <strong>Location:</strong> {report.location}<br />
+                        <strong>Time:</strong> {report.timestamp.toLocaleTimeString()}
+                    </Popup>
+                </Marker>
+            ))}
+        </>
+    );
+};
+
 interface MainMapProps {
     mapLayers: MapLayerState;
     handleMapLayerChange: (layer: keyof MapLayerState) => void;
@@ -96,7 +142,7 @@ const MainMap: React.FC<MainMapProps> = React.memo(({ mapLayers, handleMapLayerC
                         />
                         <SeismicCirclesLayer mapLayers={mapLayers} />
                         <PopulationHeatmapLayer mapLayers={mapLayers} />
-                        <DispatcherMarkers />
+                        <HazardReportsLayer show={mapLayers.hazardReports} />
                     </MapContainer>
                 </div>
                 <div className="map-legend">
