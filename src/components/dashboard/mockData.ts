@@ -1,3 +1,5 @@
+import * as turf from '@turf/turf';
+
 export const extendedSeismicEvents = [
     {
         city: 'Manila City',
@@ -141,56 +143,37 @@ export const mockUserReports = [
     { id: 12, priority: 'Low', message: 'Suspicious activity reported', location: 'Sector 1, Area B', timestamp: new Date(Date.now() - 50 * 60 * 1000) },
 ];
 
-export const mockPopulationData: [number, number, number][] = [
-    // Metro Manila (High Density)
-    [14.5995, 120.9842, 1.0],
-    [14.6760, 121.0437, 0.9],
-    [14.5547, 121.0244, 0.95],
-    [14.6042, 120.9822, 1.0],
-    [14.58, 121.00, 0.9],
-    [14.5764, 121.0851, 0.9],   // Pasig
-    [14.5794, 121.0359, 0.95],  // Mandaluyong
-    [14.5515, 121.0509, 0.85],  // Taguig
-    [14.6560, 120.9820, 0.8],   // Caloocan
-    [14.4790, 121.0190, 0.75],  // Parañaque
-    [14.4081, 121.0415, 0.7],   // Muntinlupa
-    [14.5860, 121.1750, 0.6],   // Antipolo
-
-    // Cebu City (High Density)
-    [10.3157, 123.8854, 0.85],
-    [10.2929, 123.8915, 0.8],
-
-    // Davao City (Medium Density)
-    [7.1907, 125.4553, 0.6],
-    [7.0641, 125.6028, 0.55],
-    [7.10, 125.50, 0.5],       // Near Davao
-    [7.08, 125.55, 0.6],       // Near Davao
-    [7.4478, 125.8089, 0.45],  // Tagum
-    [7.3050, 125.6850, 0.4],   // Panabo
-
-    // Baguio (Medium Density)
-    [16.4023, 120.5960, 0.5],
-
-    // Zamboanga City (Medium Density)
-    [6.9214, 122.0790, 0.4],
-    [6.91, 122.06, 0.35],      // Near Zamboanga
-
-    // Iligan City (Medium Density)
-    [8.2275, 124.2452, 0.7],
-
-    // Cagayan De Oro (Medium-High Density)
-    [8.4542, 124.6319, 0.75],
-    [8.48, 124.65, 0.7],       // Near CDO
-
-    // General Santos (Medium Density)
-    [6.1167, 125.1667, 0.65],
-    [6.15, 125.17, 0.6],       // Near GenSan
-
-    // Central Luzon
-    [15.1450, 120.5880, 0.5],   // Angeles
-    [15.0290, 120.6870, 0.45],  // San Fernando, Pampanga
-
-    // Western Visayas
-    [10.7202, 122.5621, 0.6],   // Iloilo City
-    [10.6760, 122.9500, 0.55],  // Bacolod
+const cities = [
+  { coords: [14.5995, 120.9842], density: 1.0, radius: 15 },   // Manila
+  { coords: [14.6760, 121.0437], density: 0.9, radius: 12 },   // Quezon City
+  { coords: [10.3157, 123.8854], density: 0.85, radius: 10 },  // Cebu
+  { coords: [7.1907, 125.4553], density: 0.7, radius: 12 },    // Davao
+  { coords: [8.4542, 124.6319], density: 0.75, radius: 8 },    // Cagayan de Oro
 ];
+
+function generatePopulationData(): [number, number, number][] {
+  const points: [number, number, number][] = [];
+  
+  cities.forEach(city => {
+    const [lat, lng] = city.coords;
+    const pointsForCity = Math.floor(city.density * 20);
+    
+    for (let i = 0; i < pointsForCity; i++) {
+      const angle = Math.random() * 360;
+      const distance = Math.sqrt(Math.random()) * city.radius;
+      
+      const center = turf.point([lng, lat]);
+      const destination = turf.destination(center, distance, angle, { units: 'kilometers' });
+      const [newLng, newLat] = destination.geometry.coordinates;
+      
+      const distanceFactor = 1 - (distance / city.radius);
+      const pointDensity = city.density * distanceFactor * (0.8 + Math.random() * 0.4);
+      
+      points.push([newLat, newLng, Math.max(0.1, pointDensity)]);
+    }
+  });
+  
+  return points;
+}
+
+export const mockPopulationData = generatePopulationData();
