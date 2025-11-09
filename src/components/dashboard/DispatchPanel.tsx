@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Card, Badge, ListGroup, Button, Modal, Form, InputGroup, Pagination } from 'react-bootstrap';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { mockDispatchers } from './mockData'; 
-import L from 'leaflet';
+import leaflet from 'leaflet';
 import { BroadcastPin, CheckCircleFill, SendFill, PauseCircleFill, ListUl, Search, PeopleFill, XCircle } from 'react-bootstrap-icons';
 
 const statusMap: { [key: string]: { variant: string; label: string } } = {
@@ -15,7 +15,7 @@ const getStatusInfo = (status: string) => {
     return statusMap[status] || { variant: 'secondary', label: 'Unknown' };
 };
 
-const personnelIcon = new L.Icon({
+const personnelIcon = new leaflet.Icon({
     iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
     iconSize: [12, 20],
     iconAnchor: [6, 20],
