@@ -1,18 +1,16 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import logo from "../../assets/images/alabid.png";
 
 const Quote: React.FC = () => {
     return (
         <section className="quote-section">
             <Container>
-                <Row className="align-items-center">
-                    <Col md={4} className="text-center">
-                        <img src={logo} height={200}></img>
-                    </Col>
-                    <Col md={8}>
+                <Row className="justify-content-center">
+                    <Col md={10} lg={8}>
                         <blockquote className="blockquote text-center">
-                            <h3 className="mb-0">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</h3>
+                            <p className="fs-4 fw-light mb-0">
+                                "Project Atlas transforms every phone into a seismic sensor and every citizen into a vital part of the emergency response network."
+                            </p>
                         </blockquote>
                     </Col>
                 </Row>
@@ -21,4 +19,4 @@ const Quote: React.FC = () => {
     )
 }
 
-export default Quote
+export default Quote;
