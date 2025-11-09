@@ -6,7 +6,6 @@ import Navigation from '../components/home/Navigation';
 import Header from '../components/home/Header';
 
 const Quote = lazy(() => import('../components/home/Quote'));
-const About = lazy(() => import('../components/home/About'));
 const Footer = lazy(() => import('../components/home/Footer'));
 
 const LoadingFallback = () => <div style={{ height: '100vh' }} />;
@@ -18,7 +17,6 @@ const Home: React.FC = () => {
       <Header />
       <Suspense fallback={<LoadingFallback />}>
         <Quote />
-        <About />
         <Footer />
       </Suspense>
     </>

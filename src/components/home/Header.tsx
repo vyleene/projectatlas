@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import Globe, { GlobeMethods } from 'react-globe.gl';
+// --- CHANGE 1: Import Clock for smooth animation ---
 import { SphereGeometry, MeshPhongMaterial, Mesh, TextureLoader, Clock } from 'three';
-
-// This import is correct
-import { Link } from 'react-router-dom';
 
 import earthMap from '../../assets/images/globe/earth.jpg';
 import earthBump from '../../assets/images/globe/topology.png';
@@ -30,12 +28,14 @@ const Header: React.FC = () => {
         if (globe) {
             new TextureLoader().load(earthClouds, texture => {
                 const cloudSphere = new Mesh(
+                    // --- CHANGE 2: Increased altitude from 1.004 to 1.01 to stop Z-fighting ---
                     new SphereGeometry(globe.getGlobeRadius() * 1.01, 75, 75),
+                    // --- CHANGE 3: Softer material with more transparency ---
                     new MeshPhongMaterial({
                         map: texture,
                         transparent: true,
                         opacity: 0.4,
-                        depthWrite: false 
+                        depthWrite: false // Helps with transparency rendering issues
                     })
                 );
                 globe.scene().add(cloudSphere);
@@ -58,9 +58,11 @@ const Header: React.FC = () => {
         if (!clouds) return;
         
         let animationFrameId: number;
+        // --- CHANGE 4: Time-based animation for perfect smoothness ---
         const clock = new Clock();
         const rotateClouds = () => {
             if (clouds) {
+                // Rotate based on elapsed time, not frame rate
                 clouds.rotation.y += clock.getDelta() * 0.015;
             }
             animationFrameId = requestAnimationFrame(rotateClouds);
@@ -94,16 +96,12 @@ const Header: React.FC = () => {
                 <Row className="gx-5 align-items-center justify-content-center">
                     <Col lg={10} className="text-center">
                         <h1 className="display-1 lh-1 mb-3"><b>When the earth trembles, <br/> Atlas endures.</b></h1>
-                        
-                        <Link to="/dashboard">
-                            <Button variant="primary" size="lg" className="rounded-pill mt-4 px-4 py-2">
-                                <span className="d-flex align-items-center justify-content-center">
-                                    <i className="bi-sliders me-2"></i>
-                                    <span className="small">See Atlas in Action</span>
-                                </span>
-                            </Button>
-                        </Link>
-
+                        <Button variant="primary" size="lg" className="rounded-pill mt-4 px-4 py-2">
+                            <span className="d-flex align-items-center justify-content-center">
+                                <i className="bi-sliders me-2"></i>
+                                <span className="small">See Atlas in Action</span>
+                            </span>
+                        </Button>
                     </Col>
                 </Row>
             </Container>
