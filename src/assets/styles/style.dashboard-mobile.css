@@ -1,0 +1,307 @@
+body {
+    background-color: #343a40; /* Dark background for the page */
+}
+
+.mobile-simulation-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.mobile-device {
+    width: 414px; /* iPhone 8 Plus / XR width */
+    height: 896px; /* iPhone XR height */
+    border: 16px solid black;
+    border-radius: 40px;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    position: relative;
+    background: #111;
+    overflow: hidden; /* This is crucial */
+}
+
+.mobile-device-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 210px;
+    height: 30px;
+    background: black;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-device-camera {
+    width: 8px;
+    height: 8px;
+    background: #444;
+    border-radius: 50%;
+}
+
+.mobile-device-screen {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto; /* Allow scrolling within the phone screen */
+    background: #202020; /* Match dashboard background */
+}
+
+/* Hide scrollbar for a cleaner look */
+.mobile-device-screen::-webkit-scrollbar {
+    display: none;
+}
+
+.simulation-note {
+    color: #ccc;
+    margin-top: 2rem;
+    font-style: italic;
+    max-width: 414px;
+    text-align: center;
+}
+
+/* New Mobile Dashboard Styles */
+.mobile-dashboard-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.mobile-ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000; /* Ensure UI is on top of the map */
+    pointer-events: none; /* Allow map interaction */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.mobile-ui-overlay > * {
+    pointer-events: auto; /* Re-enable pointer events for UI elements */
+}
+
+.mobile-ui-top {
+    /* This container holds elements at the top of the screen */
+    width: 100%;
+    padding: 0.75rem 1rem; /* Moves the alert bar down and in from the edges */
+}
+
+.mobile-ui-bottom {
+    width: 100%;
+    padding: 0 1rem 1rem; /* Add padding to float the component */
+}
+
+.mobile-controls-pane {
+    background-color: rgba(33, 33, 33, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    padding: 0.5rem;
+    /* padding-bottom is now handled by the container */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px; /* Add rounded corners for floating effect */
+    overflow: hidden; /* Ensure content respects the rounded corners */
+}
+
+/* Tab Styles */
+.mobile-controls-pane .nav-tabs {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.mobile-controls-pane .nav-tabs .nav-link {
+    border: none;
+    color: #adb5bd;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column; /* Stack icon and text vertically */
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem; /* Add a small gap between icon and text */
+}
+
+.mobile-controls-pane .nav-tabs .nav-link small {
+    font-size: 0.65rem; /* Reduce title size */
+}
+
+.mobile-controls-pane .nav-tabs .nav-link.active {
+    color: white;
+    background-color: transparent;
+    border-bottom: 2px solid var(--bs-primary);
+}
+
+.mobile-controls-pane .tab-content {
+    padding-top: 1rem;
+    min-height: 220px; /* Make the panel taller */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* SOS Button Layout */
+.sos-button-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 15px; /* Move the container lower */
+}
+
+.sos-main-btn {
+    width: 100px; /* Make SOS button bigger */
+    height: 100px; /* Make SOS button bigger */
+    border-radius: 50%;
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 4px solid white;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    z-index: 1; /* Set a base z-index */
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+    }
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+    }
+}
+
+.sos-satellite-item {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2; /* Ensure satellite items are on top */
+    gap: 0.4rem; /* Space between button and label */
+}
+
+.sos-satellite-item small {
+    color: #ccc;
+    font-size: 0.7rem;
+}
+
+.sos-satellite-btn {
+    width: 36px; /* Make circle even smaller */
+    height: 36px; /* Make circle even smaller */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+.sos-satellite-item.satellite-top {
+    top: -65px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.sos-satellite-item.satellite-left {
+    top: 50%;
+    left: -45px;
+    transform: translateY(-50%);
+}
+
+.sos-satellite-item.satellite-right {
+    top: 50%;
+    right: -45px;
+    transform: translateY(-50%);
+}
+
+/* Custom Button Colors */
+.sos-satellite-btn.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+}
+.sos-satellite-btn.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+}
+.sos-satellite-btn.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+/* Mobile Bottom Sheet Modal */
+.mobile-bottom-sheet {
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    max-width: 100%;
+}
+
+.mobile-bottom-sheet .modal-content {
+    border-radius: 1.5rem 1.5rem 0 0;
+    border: none;
+}
+
+.mobile-bottom-sheet-content {
+    background-color: #2a2a2a;
+    color: white;
+}
+
+.mobile-bottom-sheet .modal-header {
+    justify-content: space-between;
+}
+
+.mobile-bottom-sheet .btn-close {
+    color: white;
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.mobile-bottom-sheet .form-check-input:checked {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.mobile-bottom-sheet .form-check-input {
+    background-color: #495057;
+    border-color: #6c757d;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%28255,255,255,.25%29'/%3e%3c/svg%3e");
+}
+
+.mobile-bottom-sheet .form-check-label {
+    font-size: 1rem;
+}
+
+/* Mobile Red Alert Bar Styles */
+.mobile-alert-bar {
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    background-color: #D32F2F; /* A more vibrant red */
+    border-radius: 8px; /* Add rounded corners */
+    color: white;
+    padding: 0.4rem 0.75rem; /* Make the bar thinner */
+    font-size: 0.75rem; /* Make text a bit smaller */
+    font-weight: bold; /* Make the text bold */
+}
+
+.mobile-alert-bar .alert-icon {
+    color: #FFEB3B; /* Yellow icon color */
+    flex-shrink: 0; /* Prevent icon from shrinking */
+    font-size: 1.1rem; /* Make icon a bit bigger */
+}

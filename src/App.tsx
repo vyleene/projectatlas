@@ -4,6 +4,7 @@ import Home from './sites/Home'
 import Login from './sites/Login'
 import Register from './sites/Register'
 import Dashboard from './sites/Dashboard'
+import DashboardMobile from './sites/DashboardMobile'
 
 const App: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/mobile" element={<DashboardMobile/>} />
       </Routes>
     </BrowserRouter>
   )
