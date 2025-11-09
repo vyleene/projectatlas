@@ -6,15 +6,14 @@ body, #root {
 }
 
 .hero-section {
-  position: relative;
-  height: 500px;
+  position: relative; /* This is essential for the child's absolute positioning */
+  height: 100vh; /* Make the hero section take the full viewport height */
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  text-align: center; 
-  overflow: hidden;
+  overflow: hidden; /* Prevents scrollbars if the globe is slightly too big */
+  background-color: #000; /* A fallback background color */
 }
 
 .hero-overlay {
@@ -27,30 +26,24 @@ body, #root {
   z-index: 1;
 }
 
-.hero-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url('./assets/images/header.jpg');
-  background-size: cover;
-  background-position: center;
-  z-index: 0;
-}
-
 .hero-content {
   position: relative;
   z-index: 3;
 }
 
-.globe-wrapper {
-  width: 320px;
-  height: 320px;
-  max-width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.hero-globe-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Change this back to -50% */
+    width: 100%;
+    height: 100%;
+    z-index: 1; 
+
+    /* --- ADD THESE THREE LINES --- */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .globe-wrapper canvas {
@@ -67,19 +60,40 @@ body, #root {
 }
 
 .quote-section {
-	background: linear-gradient(90deg, #061f4a 0%, #323a45 52%, #494440 100%) !important;
+    position: relative; /* Required for the glowing lines */
+    padding: 3rem 2rem;
+    color: white;
+
+    background: linear-gradient(
+        to right, 
+        #000000 0%,      /* Changed to pure black */
+        #0b2046 25%,     /* Widened the fade for a softer blend */
+        #0b2046 75%,     /* Widened the fade for a softer blend */
+        #000000 100%     /* Changed to pure black */
+    );
+}
+
+/* This part remains to create the glowing top and bottom lines */
+.quote-section::before,
+.quote-section::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #00d9ff 50%, transparent);
+    opacity: 0.6;
+}
+
+.quote-section::before {
+    top: 0;
+}
+
+.quote-section::after {
+    bottom: 0;
 }
 
 .about-section {
-  padding: 2rem;
-  background-image: url('./assets/images/header5.jpg');
-  background-size: cover;
-  background-position: center;
-  position: relative;
-}
-
-.panel-showcase-section {
-  height: 625px !important;
   padding: 2rem;
   background-image: url('./assets/images/header6.jpg');
   background-size: cover;
