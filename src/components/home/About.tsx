@@ -7,40 +7,36 @@ import earthBump from '../../assets/images/globe/topology.png';
 import earthClouds from '../../assets/images/globe/clouds.png';
 
 const About: React.FC = () => {
-    const globeEl = useRef<GlobeMethods>(undefined);
+    const globeEl = useRef<GlobeMethods | undefined>(undefined);
     const [arcsData, setArcsData] = useState<any[]>([]);
-    const [clouds, setClouds] = useState<any>([]);
+    const cloudsRef = useRef<Mesh | null>(null);
 
     useEffect(() => {
-        if (globeEl.current) {
-            globeEl.current.controls().enabled = true;
-            globeEl.current.controls().enableZoom = false;
-            globeEl.current.controls().enablePan = false;
-            globeEl.current.controls().enableRotate = false;
-            globeEl.current.controls().autoRotate = true;
-            globeEl.current.controls().autoRotateSpeed = 0.9;
-            globeEl.current.pointOfView({ altitude: 2.5 });
-        }
+        const globe = globeEl.current;
+        if (!globe) return;
 
-        
-        if (globeEl.current) {
-            const globe = globeEl.current;
-            new TextureLoader().load(earthClouds, texture => {
-                if (globe) {
-                    const clouds = new Mesh(
-                        new SphereGeometry(globe.getGlobeRadius() * (1 + 0.004), 75, 75),
-                        new MeshPhongMaterial({ map: texture, transparent: true })
-                    );
-                    globe.scene().add(clouds);
-                    setClouds(clouds);
-                }
-            });
-        }
-        
-        const rotateClouds = () => {
-            clouds.rotation.y += -0.006 * Math.PI / 180;
-            requestAnimationFrame(rotateClouds);
-        }
+        globe.controls().autoRotate = true;
+        globe.controls().autoRotateSpeed = 0.9;
+        globe.controls().enableZoom = false;
+        globe.controls().enablePan = false;
+        globe.pointOfView({ altitude: 2.5 });
+
+        new TextureLoader().load(earthClouds, texture => {
+            const cloudGeometry = new SphereGeometry(globe.getGlobeRadius() * 1.004, 64, 64);
+            const cloudMaterial = new MeshPhongMaterial({ map: texture, transparent: true });
+            const clouds = new Mesh(cloudGeometry, cloudMaterial);
+            globe.scene().add(clouds);
+            cloudsRef.current = clouds;
+        });
+
+        let animationFrameId: number;
+        const animateClouds = () => {
+            if (cloudsRef.current) {
+                cloudsRef.current.rotation.y += 0.0001;
+            }
+            animationFrameId = requestAnimationFrame(animateClouds);
+        };
+        animateClouds();
 
         const N = 20;
         const arcsData = [...Array(N).keys()].map(() => ({
@@ -48,9 +44,13 @@ const About: React.FC = () => {
             startLng: (Math.random() - 0.5) * 360,
             endLat: (Math.random() - 0.5) * 180,
             endLng: (Math.random() - 0.5) * 360,
-            color: [['white', 'white', 'white', 'white'][Math.round(Math.random() * 3)], ['white', 'white', 'white', 'white'][Math.round(Math.random() * 3)]]
+            color: 'rgba(255, 255, 255, 0.4)'
         }));
         setArcsData(arcsData);
+
+        return () => {
+            cancelAnimationFrame(animationFrameId);
+        };
     }, []);
 
     return (
@@ -74,7 +74,7 @@ const About: React.FC = () => {
                                 <Card.Text>
                                     Our goal is to improve earthquake response and situational awareness through crowdsourced shaking reports and dynamic heatmap visualizations.
                                 </Card.Text>
-                                <Button variant="primary" className="mt-auto align-self-start">Explore the Heatmap</Button>
+                                <Button href="/dashboard" variant="primary" className="mt-auto align-self-start">Explore the Heatmap</Button>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -82,16 +82,16 @@ const About: React.FC = () => {
                         <div className="globe-wrapper">
                             <Globe
                                 ref={globeEl}
+                                width={400}
+                                height={400}
                                 globeImageUrl={earthMap}
                                 bumpImageUrl={earthBump}
                                 backgroundColor="rgba(0,0,0,0)"
                                 arcsData={arcsData}
-                                arcColor={'color'}
+                                arcColor={() => 'rgba(255, 255, 255, 0.4)'}
                                 arcDashLength={() => Math.random()}
                                 arcDashGap={() => Math.random()}
                                 arcDashAnimateTime={() => Math.random() * 4000 + 500}
-                                width={400}
-                                height={400}
                             />
                         </div>
                     </Col>
