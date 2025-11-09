@@ -289,8 +289,8 @@ export const mockContacts = [
     { id: 1, name: 'National Emergency Hotline', type: 'Emergency' },
     { id: 2, name: 'Local Police Department', type: 'Emergency' },
     { id: 3, name: 'City Fire Department', type: 'Emergency' },
-    { id: 4, name: 'Jane Doe', type: 'Personal' },
-    { id: 5, name: 'John Smith', type: 'Personal' },
-    { id: 6, name: 'Maria Dela Cruz', type: 'Personal' },
+    { id: 4, name: 'Calvyn Adeva', type: 'Personal' },
+    { id: 5, name: 'Kenneth Gloria', type: 'Personal' },
+    { id: 6, name: 'Lex Cabasag', type: 'Personal' },
     { id: 7, name: 'Local Hospital', type: 'Emergency' },
 ];
